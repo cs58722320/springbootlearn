@@ -1,6 +1,8 @@
 package com.jeffdu.rabbitmqlearn;
 
 import com.jeffdu.rabbitmqlearn.direct.SimpleSender;
+import com.jeffdu.rabbitmqlearn.subpub.NewsPublisher;
+import com.jeffdu.rabbitmqlearn.worker.MessageProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,24 @@ public class RabbitmqlearnApplicationTests {
 	@Autowired
 	private SimpleSender sender;
 
+	@Autowired
+	private MessageProvider messageProvider;
+
+	@Autowired
+	private NewsPublisher newsPublisher;
+
 	@Test
 	public void simpleSenderTest() {
 		sender.send();
 	}
 
+	@Test
+	public void messageWorkerTest() {
+		messageProvider.send();
+	}
+
+	@Test
+	public void pubsubTest() {
+		newsPublisher.send();
+	}
 }
