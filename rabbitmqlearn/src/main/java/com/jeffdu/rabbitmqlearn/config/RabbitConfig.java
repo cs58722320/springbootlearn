@@ -1,9 +1,6 @@
 package com.jeffdu.rabbitmqlearn.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,6 +42,14 @@ public class RabbitConfig {
     }
 
     /**
+     * 直连交换机
+     */
+    @Bean
+    public DirectExchange directExchange(){
+        return new DirectExchange("directExchange");
+    }
+
+    /**
      * 订阅者A队列
      */
     @Bean
@@ -59,6 +64,23 @@ public class RabbitConfig {
 //    public Queue queueB(){
 //        return new Queue("subscriberA", true);
 //    }
+
+    /**
+     * RoutingA队列
+     */
+    @Bean
+    public Queue routingQueueA(){
+        return new Queue("routeA");
+    }
+
+    /**
+     * RoutingB队列
+     */
+    @Bean
+    public Queue routingQueueB(){
+        return new Queue("routeB");
+    }
+
 
     /**
      * 绑定A
@@ -77,4 +99,26 @@ public class RabbitConfig {
 //    public Binding bindingB(){
 //        return BindingBuilder.bind(queueB()).to(exchange());
 //    }
+
+    /**
+     * 绑定路由A
+     */
+    @Bean
+    public Binding bingdingRouteA(){
+        return BindingBuilder.bind(routingQueueA()).to(directExchange()).with("black");
+    }
+    @Bean
+    public Binding bingdingRouteA_2(){
+        return BindingBuilder.bind(routingQueueB()).to(directExchange()).with("black");
+    }
+
+
+    /**
+     * 绑定路由B
+     */
+    @Bean
+    public Binding bingdingRouteB(){
+        return BindingBuilder.bind(routingQueueB()).to(directExchange()).with("white");
+    }
+
 }
